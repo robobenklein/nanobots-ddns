@@ -11,9 +11,9 @@ Just an idea, stil figuring out the right tech to make it happen.
 
 # Goals
 
-The client-side should be dead simple. Nothing more than a HTTP client like curl and perhaps a bash script at most for the advanced use-cases. You should be able to type even 'complex' requests into a machine by hand.
+The client-side should be dead simple. Nothing more than a HTTP client like curl and perhaps a bash script at most for the advanced use-cases. You should be able to type even 'complex' requests into a machine by hand. This means the official DDNS protocol doesn't fit the use case.
 
-This means the official DDNS protocol doesn't fit the use case. 
+I want all successful (2xx) responses to be minimal in size, maximal in utility, and always human-readable. Perhaps there could be query params to adjust the response format, but in general I am imagining piping the output of such a curl request into another script or `jq` in the worst case: anything more complex than that it out of scope.
 
 ## How?
 
