@@ -1,0 +1,33 @@
+volumes:
+  valkey_data:
+
+services:
+  kv:
+    image: valkey/valkey:9-alpine
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+    volumes:
+      - valkey_data:/data
+  web:
+    depends_on:
+      kv:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/web.dockerfile
+    environment:
+      - NANOBOTS_SALT
+      - LISTEN_ADDR=0.0.0.0
+      - "VALKEY_URL=redis://kv/0"
+      - TLD
+  ns:
+    depends_on:
+      kv:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: docker/ns.dockerfile
+    environment:
+      - "VALKEY_URL=redis://kv"
+      - TLD
+      - LISTEN_ADDR=0.0.0.0
