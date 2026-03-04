@@ -47,6 +47,7 @@ To investigate:
   - MX might be too ripe for abuse
   - SSHFP could be interesting to get some amount of MITM protection automatically.
     - e.g. API server automatically tries port 22 on the requester IP and sets the SSHFP record based on that
+    - now when you connect to the system for the first time you don't have to copy the ssh fingerprint by hand
 
 ### Endpoints
 
