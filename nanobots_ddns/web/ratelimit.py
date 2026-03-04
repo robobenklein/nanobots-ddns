@@ -4,7 +4,7 @@ import bottle
 import valkey
 from limits import storage, strategies, parse
 
-from .util import cut_ip
+from ..util import cut_ip
 
 limits_storage = storage.MemoryStorage()
 limiter = strategies.SlidingWindowCounterRateLimiter(limits_storage)
