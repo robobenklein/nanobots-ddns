@@ -9,6 +9,7 @@ from .util import cut_ip
 limits_storage = storage.MemoryStorage()
 limiter = strategies.SlidingWindowCounterRateLimiter(limits_storage)
 
+
 def limited_ip(ip: Union[ipaddress.IPv4Address, ipaddress.IPv6Address, str]):
     if isinstance(ip, str):
         ip = ipaddress.ip_address(ip)
@@ -19,6 +20,7 @@ def limited_ip(ip: Union[ipaddress.IPv4Address, ipaddress.IPv6Address, str]):
             return cut_ip(ip, 64)
         case _:
             raise NotImplementedError()
+
 
 # TODO a bottle plugin to handle the global rate limiting by limited_ip
 

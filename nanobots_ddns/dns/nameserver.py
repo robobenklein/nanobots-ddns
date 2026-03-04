@@ -1,8 +1,11 @@
 import dnslib
 from loguru import logger
 from nserver import (
-    NameServer, Query, Response,
-    A, AAAA,
+    NameServer,
+    Query,
+    Response,
+    A,
+    AAAA,
 )
 from nserver.application import DirectApplication
 from nserver.transport import UDPv4Transport
@@ -15,12 +18,13 @@ server = NameServer("example")
 #
 # AttributeError: 'NameServer' object has no attribute 'register_raw_exception_handler'. Did you mean: 'register_exception_handler'?
 #
-#@server.exception_handler(Exception)
-#def print_errors(exception: Exception, query: Query) -> Response:
+# @server.exception_handler(Exception)
+# def print_errors(exception: Exception, query: Query) -> Response:
 #    logger.error(f"failed to process {record} due to {exception!r}")
 #    response = record.reply()
 #    response.header.rcode = dnslib.RCODE.SERVFAIL
 #    return response
+
 
 # upstream needs a fix
 def dumbo_error_log(f):
@@ -29,7 +33,9 @@ def dumbo_error_log(f):
             return f(*a, **kwa)
         except Exception as e:
             logger.error(f"{e!r}")
+
     return wrap
+
 
 @server.rule(f"*.v4.{config.tld}", ["A"])
 @dumbo_error_log
@@ -41,6 +47,7 @@ def v4_records(query: Query):
     r = try_decode(vk.get(vk_key))
     logger.debug(f"result {r}")
     return A(query.name, r)
+
 
 @server.rule(f"*.v6.{config.tld}", ["AAAA"])
 @dumbo_error_log
@@ -56,9 +63,12 @@ def v6_records(query: Query):
 
 def run():
     logger.info(config)
-    app = DirectApplication(server, UDPv4Transport(
-        address=str(config.listen_addr),
-        port=config.listen_port,
-    ))
+    app = DirectApplication(
+        server,
+        UDPv4Transport(
+            address=str(config.listen_addr),
+            port=config.listen_port,
+        ),
+    )
     logger.info(f"start {app}")
     app.run()

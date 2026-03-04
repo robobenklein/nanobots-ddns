@@ -62,18 +62,20 @@ def update_v4(key: str):
         vk_key,
         r_ip,
         get=True,
-        ex=7*SECONDS_IN_DAY,
+        ex=7 * SECONDS_IN_DAY,
     )
     if old_value:
         old_value = old_value.decode()
     if old_value == r_ip:
         return simple_response(204)
     return simple_response(
-        201 if not old_value else 200, {
+        201 if not old_value else 200,
+        {
             "now": {fqdn: r_ip},
             "old": {fqdn: old_value},
-        }
+        },
     )
+
 
 @app.post("/v6/<key>")
 def update_v6(key: str):
@@ -93,17 +95,18 @@ def update_v6(key: str):
         vk_key,
         r_ip,
         get=True,
-        ex=7*SECONDS_IN_DAY,
+        ex=7 * SECONDS_IN_DAY,
     )
     if old_value:
         old_value = old_value.decode()
     if old_value == r_ip:
         return simple_response(204)
     return simple_response(
-        201 if not old_value else 200, {
+        201 if not old_value else 200,
+        {
             "now": {fqdn: r_ip},
             "old": {fqdn: old_value},
-        }
+        },
     )
 
 

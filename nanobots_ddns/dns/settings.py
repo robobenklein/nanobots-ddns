@@ -17,4 +17,5 @@ class Settings(SharedSettings):
     listen_addr: networks.IPvAnyAddress = "127.0.0.1"
     listen_port: int = 53053
 
+
 config = Settings()

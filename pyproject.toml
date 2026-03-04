@@ -1,9 +1,9 @@
 [project]
 name = "nanobots-ddns"
-version = "0.1.0"
-description = ""
+version = "0.1.1"
+description = "Anonymous DDNS service for the nanobot swarm"
 authors = [
-    {name = "Ben Klein",email = "robobenklein@gmail.com"}
+    {name = "Ben Klein",email = "robobenklein@unhexium.net"}
 ]
 readme = "README.md"
 requires-python = ">=3.13,<4"
@@ -19,13 +19,9 @@ dependencies = [
     "nserver (>=3.1.0,<4.0.0)",
 ]
 
-[project.scripts]
-nanobots = "nanobots_ddns.__main__:cli"
-
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 black = "^26.1.0"
-
