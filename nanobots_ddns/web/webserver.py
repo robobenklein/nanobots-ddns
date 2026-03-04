@@ -12,7 +12,7 @@ from pydantic import BaseModel, field_validator, model_validator
 from loguru import logger
 
 from .settings import config
-from .util import gimme_vk, SECONDS_IN_DAY
+from ..util import gimme_vk, SECONDS_IN_DAY
 from .ratelimit import limited_ip
 from .. import security
 

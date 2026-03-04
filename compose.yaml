@@ -28,6 +28,6 @@ services:
       context: .
       dockerfile: docker/ns.dockerfile
     environment:
-      - "VALKEY_URL=redis://kv"
+      - "VALKEY_URL=redis://kv/0"
       - TLD
       - LISTEN_ADDR=0.0.0.0

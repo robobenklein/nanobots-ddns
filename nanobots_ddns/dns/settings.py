@@ -8,14 +8,13 @@ from pydantic import (
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
+from ..util import SharedSettings
+
 load_dotenv()
 
 
-class Settings(BaseSettings):
+class Settings(SharedSettings):
     listen_addr: networks.IPvAnyAddress = "127.0.0.1"
     listen_port: int = 53053
-    valkey_url: RedisDsn = "redis://localhost/0"
-    tld: str
-
 
 config = Settings()
