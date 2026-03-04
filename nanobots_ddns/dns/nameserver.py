@@ -1,3 +1,5 @@
+import uuid
+
 import dnslib
 from loguru import logger
 from nserver import (
@@ -59,6 +61,22 @@ def v6_records(query: Query):
     r = try_decode(vk.get(vk_key))
     logger.debug(f"result {r}")
     return AAAA(query.name, r)
+
+@server.rule(f"*.ds.{config.tld}", ["A", "AAAA"])
+@dumbo_error_log
+def ds_records(query: Query):
+    logger.debug(query)
+    parts = query.name.split('.')
+    assert parts[1] == "ds"
+    sub_uuid = uuid.UUID(parts[0])
+    getit = lambda vk_key: try_decode(gimme_vk().get(vk_key))
+    match query.type:
+        case 'A':
+            return A(query.name, getit(f"v4/A/{sub_uuid}.v4.{config.tld}"))
+        case 'AAAA':
+            return AAAA(query.name, getit(f"v6/AAAA/{sub_uuid}.v6.{config.tld}"))
+        case _:
+            raise NotImplementedError(f"cannot serve qtype {query.type} for {query.name}")
 
 
 def run():
