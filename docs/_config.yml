@@ -1,0 +1,8 @@
+title: DDNS for Nanobots
+description: Dynamic DNS service with no accounts, registration, tracking or PII of any kind.
+theme: just-the-docs
+
+url: https://docs.nanobots.club
+
+aux_links:
+  Template Repository: https://github.com/just-the-docs/just-the-docs-template
