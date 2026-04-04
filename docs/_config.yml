@@ -5,6 +5,7 @@ theme: just-the-docs
 color_scheme: dark
 
 url: https://docs.nanobots.club
+sourcecode_url: https://github.com/robobenklein/nanobots-ddns
 
 defaults:
   - scope:

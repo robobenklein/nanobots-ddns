@@ -4,3 +4,16 @@ nav_order: 20
 ---
 
 The nanobots DDNS service exposes a variety of DDNS behaviors under different API routes and subdomains. These 'types' are identified by a short name in the API route and the DNS subdomain.
+
+For this instance, the API is hosted at `{{page.nanobots_api}}` and the DNS TLD is `{{page.nanobots_domain}}`
+
+Check the navigation sidebar to see more information about each type, including sample usages, scripts, and behavior details.
+
+Overview:
+
+|Type|Desc|
+|--|--|
+|`v4`|IPv4 single-address|
+|`v6`|IPv6 single-address|
+|`ds`|IPv4 or IPv6, based on query type with data provided by `v4` or `v6`|
+|`v6m`|Multi-address IPv6|
