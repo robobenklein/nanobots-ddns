@@ -19,3 +19,11 @@ Overview:
 |`v4m`|Multi-address IPv4|
 |`v6m`|Multi-address IPv6|
 |`m`|IPv4 and IPv6, based on query type with data provided by `v4m` or `v6m`|
+
+# Common behaviors
+
+The default behavior is to return successful responses (2xx-3xx) in JSON format, and error responses (4xx-5xx) in plain text.
+
+If a route takes request input, it will normally be JSON. Send `Content-Type: application/json` when you do, or your tooling might do that for you. (like `httpie`)
+
+
