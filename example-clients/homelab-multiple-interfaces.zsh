@@ -3,7 +3,7 @@
 # Nanobots DDNS sample client
 # Use case: you have a homelab server behind a router
 # You probably have DHCP for either IPv4 or IPv6
-# You have only 1 external/public IPv4, but maybe you've got one or a few IPv6 addresses.
+# You have only 1 external/public IPv4, but maybe you've got one or a few IPv6 addresses on this system.
 
 ## Override with a secure secret!
 # Either edit here or via the envvar
@@ -13,9 +13,12 @@ if [[ -z "${my_secret_nanobots_token}" ]]; then
   exit 1
 fi
 
+set -e
+
 ## IPv4
 
-curl -4sSLX POST "https://v1.nanobots-api.unhexium.dev/v4/${my_secret_nanobots_token}"
+my_ipv4=$(curl -4sSL https://v1.nanobots-api.unhexium.dev/ip/me)
+echo '["'${my_ipv4}'"]' | curl --json @- -4X POST "https://v1.nanobots-api.unhexium.dev/v4m/${my_secret_nanobots_token}"
 
 ### IPv6
 

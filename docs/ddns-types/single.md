@@ -1,5 +1,5 @@
 ---
-title: "Most basic: `v4`, `v6`, `ds`"
+title: "Most basic: v4, v6, ds"
 nav_order: 2010
 parent: DDNS Types
 ---

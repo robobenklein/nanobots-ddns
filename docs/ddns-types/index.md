@@ -15,5 +15,7 @@ Overview:
 |--|--|
 |`v4`|IPv4 single-address|
 |`v6`|IPv6 single-address|
-|`ds`|IPv4 or IPv6, based on query type with data provided by `v4` or `v6`|
+|`ds`|IPv4 and IPv6, based on query type with data provided by `v4` or `v6`|
+|`v4m`|Multi-address IPv4|
 |`v6m`|Multi-address IPv6|
+|`m`|IPv4 and IPv6, based on query type with data provided by `v4m` or `v6m`|
