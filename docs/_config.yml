@@ -1,6 +1,8 @@
 title: DDNS for Nanobots
 description: Dynamic DNS service with no accounts, registration, tracking or PII of any kind.
+
 theme: just-the-docs
+color_scheme: dark
 
 url: https://docs.nanobots.club
 
