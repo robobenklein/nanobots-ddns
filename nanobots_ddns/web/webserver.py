@@ -110,14 +110,14 @@ def update_v6(key: str):
     )
 
 @app.post("/v6m/<key>")
-def update_v6(key: str):
+def update_v6m(key: str):
     record_uuid = security.key_to_uuid(key)
     logger.info(f"processing v6m request for {record_uuid}")
     r_ip = get_client_ip()
     logger.info(f"from {r_ip}")
     if not isinstance(r_ip, ipaddress.IPv6Address):
         return simple_response(
-            400, f"v6 request must come from v6 IP address, you are {r_ip}"
+            400, f"v6m request must come from v6 IP address, you are {r_ip}"
         )
     r_ip = str(r_ip)
     # v6m requires that the input IPs include the requestor's IP
@@ -138,7 +138,7 @@ def update_v6(key: str):
         return simple_response(
             400, f"v6m: error: parsing or validation of input IPs failed: {e}"
         )
-    fqdn = f"{record_uuid}.v6.{config.tld}"
+    fqdn = f"{record_uuid}.v6m.{config.tld}"
     vk_key = f"v6m/AAAA/{fqdn}"
     vk = gimme_vk()
     # v6m stores multiple IPv6s as strings in an array

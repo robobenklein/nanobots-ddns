@@ -1,4 +1,5 @@
 import uuid
+import json
 
 import dnslib
 from loguru import logger
@@ -61,6 +62,19 @@ def v6_records(query: Query):
     r = try_decode(vk.get(vk_key))
     logger.debug(f"result {r}")
     return AAAA(query.name, r)
+
+@server.rule(f"*.v6m.{config.tld}", ["AAAA"])
+@dumbo_error_log
+def v6m_records(query: Query):
+    logger.debug(query)
+    vk_key = f"v6m/AAAA/{query.name}"
+    logger.debug(f"will fetch {vk_key}")
+    vk = gimme_vk()
+    r = json.loads(try_decode(vk.get(vk_key)))
+    logger.debug(f"result {r}")
+    return list(
+        [AAAA(query.name, ip) for ip in r]
+    )
 
 @server.rule(f"*.ds.{config.tld}", ["A", "AAAA"])
 @dumbo_error_log
