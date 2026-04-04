@@ -28,7 +28,7 @@ def simple_response(code=200, content: Optional[Union[dict, str]] = None):
     if type(content) == dict:
         body = json.dumps(content)
         headers["Content-Type"] = "application/json"
-    if not body.endswith('\n'):
+    if type(body) == str and not body.endswith('\n'):
         body += '\n'
     return bottle.HTTPResponse(
         body=body,
