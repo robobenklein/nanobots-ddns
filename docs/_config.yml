@@ -16,4 +16,4 @@ defaults:
       nanobots_domain: "nanobots.club"
 
 aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+  Source Code: https://github.com/robobenklein/nanobots-ddns

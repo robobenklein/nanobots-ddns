@@ -26,8 +26,10 @@ def simple_response(code=200, content: Optional[Union[dict, str]] = None):
         body = content
         headers["Content-Type"] = "text/plain"
     if type(content) == dict:
-        body = json.dumps(content) + '\n'
+        body = json.dumps(content)
         headers["Content-Type"] = "application/json"
+    if not body.endswith('\n'):
+        body += '\n'
     return bottle.HTTPResponse(
         body=body,
         status=code,
@@ -43,6 +45,9 @@ def get_client_ip():
         return remote_addr
     # TODO other cases to consider
 
+@app.get("/ip/me")
+def get_my_ip():
+    return simple_response(200, str(get_client_ip()))
 
 @app.post("/v4/<key>")
 def update_v4(key: str):
