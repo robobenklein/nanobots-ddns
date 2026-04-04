@@ -28,8 +28,8 @@ def simple_response(code=200, content: Optional[Union[dict, str]] = None):
     if type(content) == dict:
         body = json.dumps(content)
         headers["Content-Type"] = "application/json"
-    if type(body) == str and not body.endswith('\n'):
-        body += '\n'
+    if type(body) == str and not body.endswith("\n"):
+        body += "\n"
     return bottle.HTTPResponse(
         body=body,
         status=code,
@@ -45,9 +45,11 @@ def get_client_ip():
         return remote_addr
     # TODO other cases to consider
 
+
 @app.get("/ip/me")
 def get_my_ip():
     return simple_response(200, str(get_client_ip()))
+
 
 @app.post("/v4/<key>")
 def update_v4(key: str):
@@ -114,6 +116,7 @@ def update_v6(key: str):
         },
     )
 
+
 @app.post("/v4m/<key>")
 def update_v4m(key: str):
     record_uuid = security.key_to_uuid(key)
@@ -135,9 +138,7 @@ def update_v4m(key: str):
         ips = tuple(set([ipaddress.IPv4Address(x) for x in req_ips]))
         assert all([ip.is_global for ip in ips]), f"IPs must be global IPv4 addresses"
     except AssertionError as e:
-        return simple_response(
-            400, f"v4m: {e.args}"
-        )
+        return simple_response(400, f"v4m: {e.args}")
     except Exception as e:
         logger.warning(f"bad request from {r_ip}: {e}")
         return simple_response(
@@ -167,6 +168,7 @@ def update_v4m(key: str):
         },
     )
 
+
 @app.post("/v6m/<key>")
 def update_v6m(key: str):
     record_uuid = security.key_to_uuid(key)
@@ -188,9 +190,7 @@ def update_v6m(key: str):
         ips = tuple(set([ipaddress.IPv6Address(x) for x in req_ips]))
         assert all([ip.is_global for ip in ips]), f"IPs must be global IPv6 addresses"
     except AssertionError as e:
-        return simple_response(
-            400, f"v6m: {e.args}"
-        )
+        return simple_response(400, f"v6m: {e.args}")
     except Exception as e:
         logger.warning(f"bad request from {r_ip}: {e}")
         return simple_response(
@@ -219,6 +219,7 @@ def update_v6m(key: str):
             "old": {fqdn: old_value},
         },
     )
+
 
 def run():
     """

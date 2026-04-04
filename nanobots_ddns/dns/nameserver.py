@@ -66,21 +66,25 @@ def v6_records(query: Query):
     logger.debug(f"result {r}")
     return AAAA(query.name, r)
 
+
 @server.rule(f"*.ds.{config.tld}", ["A", "AAAA"])
 @dumbo_error_log
 def ds_records(query: Query):
     logger.debug(query)
-    parts = query.name.split('.')
+    parts = query.name.split(".")
     assert parts[1] == "ds"
     sub_uuid = uuid.UUID(parts[0])
     getit = lambda vk_key: try_decode(gimme_vk().get(vk_key))
     match query.type:
-        case 'A':
+        case "A":
             return A(query.name, getit(f"v4/A/{sub_uuid}.v4.{config.tld}"))
-        case 'AAAA':
+        case "AAAA":
             return AAAA(query.name, getit(f"v6/AAAA/{sub_uuid}.v6.{config.tld}"))
         case _:
-            raise NotImplementedError(f"cannot serve qtype {query.type} for {query.name}")
+            raise NotImplementedError(
+                f"cannot serve qtype {query.type} for {query.name}"
+            )
+
 
 ### v4m v6m m
 @server.rule(f"*.v4m.{config.tld}", ["A"])
@@ -96,9 +100,8 @@ def v4m_records(query: Query):
         return []
     r = json.loads(r)
     logger.debug(f"result {r}")
-    return list(
-        [A(query.name, ip) for ip in r]
-    )
+    return list([A(query.name, ip) for ip in r])
+
 
 @server.rule(f"*.v6m.{config.tld}", ["AAAA"])
 @dumbo_error_log
@@ -113,35 +116,34 @@ def v6m_records(query: Query):
         return []
     r = json.loads(r)
     logger.debug(f"result {r}")
-    return list(
-        [AAAA(query.name, ip) for ip in r]
-    )
+    return list([AAAA(query.name, ip) for ip in r])
+
 
 @server.rule(f"*.m.{config.tld}", ["A", "AAAA"])
 @dumbo_error_log
 def m_records(query: Query):
     logger.debug(query)
-    parts = query.name.split('.')
+    parts = query.name.split(".")
     assert parts[1] == "m"
     sub_uuid = uuid.UUID(parts[0])
     getit = lambda vk_key: try_decode(gimme_vk().get(vk_key))
     match query.type:
-        case 'A':
+        case "A":
             RecordType = A
             ips = getit(f"v4m/A/{sub_uuid}.v4m.{config.tld}")
-        case 'AAAA':
+        case "AAAA":
             RecordType = AAAA
             ips = getit(f"v6m/AAAA/{sub_uuid}.v6m.{config.tld}")
         case _:
-            raise NotImplementedError(f"cannot serve qtype {query.type} for {query.name}")
+            raise NotImplementedError(
+                f"cannot serve qtype {query.type} for {query.name}"
+            )
     if ips:
         ips = json.loads(ips)
     else:
         logger.debug(f"no such record found for type m")
         return []
-    return [
-        RecordType(query.name, ip) for ip in ips
-    ]
+    return [RecordType(query.name, ip) for ip in ips]
 
 
 def run():
