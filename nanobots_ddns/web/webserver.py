@@ -109,6 +109,59 @@ def update_v6(key: str):
         },
     )
 
+@app.post("/v4m/<key>")
+def update_v4m(key: str):
+    record_uuid = security.key_to_uuid(key)
+    logger.info(f"processing v4m request for {record_uuid}")
+    r_ip = get_client_ip()
+    logger.info(f"from {r_ip}")
+    if not isinstance(r_ip, ipaddress.IPv4Address):
+        return simple_response(
+            400, f"v4m request must come from v4 IP address, you are {r_ip}"
+        )
+    r_ip = str(r_ip)
+    # v4m requires that the input IPs include the requestor's IP
+    try:
+        req_ips = bottle.request.json
+        if type(req_ips) != list:
+            logger.debug(f"type of ips is {type(req_ips)}")
+            raise ValueError("ips is not a list")
+        assert r_ip in req_ips, f"requestor IP must be within target addresses"
+        ips = tuple(set([ipaddress.IPv4Address(x) for x in req_ips]))
+        assert all([ip.is_global for ip in ips]), f"IPs must be global IPv4 addresses"
+    except AssertionError as e:
+        return simple_response(
+            400, f"v4m: {e.args}"
+        )
+    except Exception as e:
+        logger.warning(f"bad request from {r_ip}: {e}")
+        return simple_response(
+            400, f"v4m: error: parsing or validation of input IPs failed: {e}"
+        )
+    fqdn = f"{record_uuid}.v4m.{config.tld}"
+    vk_key = f"v4m/A/{fqdn}"
+    vk = gimme_vk()
+    # v4m stores multiple IPv4s as strings in an array
+    new_value = tuple([str(ip) for ip in ips])
+    logger.debug(f"set new: {new_value}")
+    old_value = vk.set(
+        vk_key,
+        json.dumps(new_value),
+        get=True,
+        ex=7 * SECONDS_IN_DAY,
+    )
+    if old_value:
+        old_value = json.loads(old_value.decode())
+        if set(old_value) == set(new_value):
+            return simple_response(304)
+    return simple_response(
+        201 if not old_value else 200,
+        {
+            "now": {fqdn: new_value},
+            "old": {fqdn: old_value},
+        },
+    )
+
 @app.post("/v6m/<key>")
 def update_v6m(key: str):
     record_uuid = security.key_to_uuid(key)

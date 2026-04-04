@@ -11,6 +11,10 @@ One cronjob and a CNAME is all it takes!
 
 A mostly-working public instance is available under the domain `nanobots.club`.
 
+# Docs
+
+[Are available at docs.nanobots.club](https://docs.nanobots.club) or in the `docs/` folder (a jekyll site).
+
 # Goals
 
 The client-side should be dead simple. Nothing more than a HTTP client like curl and perhaps a bash script at most for the advanced use-cases. You should be able to type even 'complex' requests into a machine by hand. This means the official DDNS protocol doesn't fit the use case, and anything you need to compile or install more than a few common tools for (ew dependencies) is out-of-scope.
@@ -52,12 +56,3 @@ For abuse prevention reasons, if you want to update records to more than a singl
   - SSHFP could be interesting to get some amount of MITM protection automatically.
     - e.g. API server automatically tries port 22 on the requester IP and sets the SSHFP record based on that
     - now when you connect to the system for the first time you don't have to copy the ssh fingerprint by hand
-
-### Endpoints
-
-|Subdomain|Methodology|
-|-|-|
-|v6, v4|Only hold a single A or AAAA address, based on the requester IP. No additional request data is permitted. Intended to be a 'set and forget' solution to tracking a system's IP as it moves networks, IPs, etc.|
-|v6m, v4m|Can hold a few A or AAAA records, but you need to pass the whole list on each request. For abuse prevention reasons, one of the IPs in the list you send must match the one you're requesting from.|
-|m|Resolves to both A and AAAA records, so you can have a dual-stack DDNS name. When you make the request with IPv6 it sets all AAAA records, and respectively for IPv4.|
-

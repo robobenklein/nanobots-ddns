@@ -1,5 +1,5 @@
-title: DDNS for Nanobots
-description: Dynamic DNS service with no accounts, registration, tracking or PII of any kind.
+title: Nanobots DDNS
+description: Dynamic DNS service for nanobots, with no accounts, registration, tracking or PII of any kind.
 
 theme: just-the-docs
 color_scheme: dark
