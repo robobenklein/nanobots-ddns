@@ -6,5 +6,13 @@ color_scheme: dark
 
 url: https://docs.nanobots.club
 
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+      nanobots_api: "https://v1.nanobots-api.unhexium.dev"
+      nanobots_domain: "nanobots.club"
+
 aux_links:
   Template Repository: https://github.com/just-the-docs/just-the-docs-template
